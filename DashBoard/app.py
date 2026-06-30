@@ -4,23 +4,11 @@ from datetime import datetime, timezone
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-from pathlib import Path
 import streamlit as st
+from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
-
-st.write("BASE_DIR =", BASE_DIR)
-st.write("Files in BASE_DIR =", list(BASE_DIR.iterdir()))
-
 MODEL_DIR = BASE_DIR / "trained model"
-
-st.write("MODEL_DIR =", MODEL_DIR)
-st.write("MODEL_DIR exists =", MODEL_DIR.exists())
-
-if MODEL_DIR.exists():
-    st.write("Contents:", list(MODEL_DIR.iterdir()))
-
-
 # Workaround for OpenMP duplication error in Anaconda environment
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
@@ -80,16 +68,16 @@ def load_all_models():
     device = torch.device("cpu")
     models = {}
     
-    model_paths = {
-        "1h": "trained model/hour1epoch_002_train_3.797301e-01.pt",
-        "2h": "trained model/hour2epoch_003_train_5.579358e-01.pt",
-        "3h": "trained model/hour3epoch_001_train_8.084027e-01.pt"
-    }
+   model_paths = {
+    "1h": MODEL_DIR / "hour1epoch_002_train_3.797301e-01.pt",
+    "2h": MODEL_DIR / "hour2epoch_003_train_5.579358e-01.pt",
+    "3h": MODEL_DIR / "hour3epoch_001_train_8.084027e-01.pt",
+}
     
     for key, path in model_paths.items():
-        if os.path.exists(path):
+        if path.exists():
             try:
-                ckpt = torch.load(path, map_location=device, weights_only=False)
+                ckpt = torch.load(str(path), map_location=device, weights_only=False)
                 num_ch = len(ckpt["channel_cols"])
                 eng_dim = len(ckpt["engineered_cols"])
                 model = FlareTCN(num_channels=num_ch, engineered_dim=eng_dim)
@@ -330,9 +318,9 @@ selected_model_key = st.sidebar.selectbox(
 
 # Parquet File Selection
 parquet_options = {
-    "2026-06-15 (Day 1 - Active Solar State)": "trained model/merged_20260615.parquet",
-    "2026-06-16 (Day 2 - Moderate Solar State)": "trained model/merged_20260616.parquet",
-    "2026-06-17 (Day 3 - Calm Solar State)": "trained model/merged_20260617.parquet"
+    "2026-06-15 (Day 1 - Active Solar State)": MODEL_DIR / "merged_20260615.parquet",
+    "2026-06-16 (Day 2 - Moderate Solar State)": MODEL_DIR / "merged_20260616.parquet",
+    "2026-06-17 (Day 3 - Calm Solar State)": MODEL_DIR / "merged_20260617.parquet",
 }
 selected_file_label = st.sidebar.selectbox(
     "Input Parquet Dataset",
@@ -342,8 +330,8 @@ selected_file_label = st.sidebar.selectbox(
 parquet_path = parquet_options[selected_file_label]
 
 # Load and Preprocess Data
-if os.path.exists(parquet_path):
-    df_processed = preprocess_dataset(parquet_path)
+if parquet_path.exists():
+    df_processed = preprocess_dataset(str(parquet_path))
     
     # Pad short datasets (like Day 3) to satisfy the 6-hour history requirement of the model
     if len(df_processed) < 360:
