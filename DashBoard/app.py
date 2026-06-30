@@ -68,7 +68,7 @@ def load_all_models():
     device = torch.device("cpu")
     models = {}
     
-   model_paths = {
+    model_paths = {
     "1h": MODEL_DIR / "hour1epoch_002_train_3.797301e-01.pt",
     "2h": MODEL_DIR / "hour2epoch_003_train_5.579358e-01.pt",
     "3h": MODEL_DIR / "hour3epoch_001_train_8.084027e-01.pt",
