@@ -4,7 +4,21 @@ from datetime import datetime, timezone
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+from pathlib import Path
 import streamlit as st
+
+BASE_DIR = Path(__file__).resolve().parent
+
+st.write("BASE_DIR =", BASE_DIR)
+st.write("Files in BASE_DIR =", list(BASE_DIR.iterdir()))
+
+MODEL_DIR = BASE_DIR / "trained model"
+
+st.write("MODEL_DIR =", MODEL_DIR)
+st.write("MODEL_DIR exists =", MODEL_DIR.exists())
+
+if MODEL_DIR.exists():
+    st.write("Contents:", list(MODEL_DIR.iterdir()))
 
 
 # Workaround for OpenMP duplication error in Anaconda environment
