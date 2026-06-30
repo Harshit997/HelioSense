@@ -5,6 +5,14 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
+st.write("Current Working Directory:", os.getcwd())
+st.write("Root Files:", os.listdir("."))
+
+if os.path.exists("trained model"):
+    st.write("trained model contents:")
+    st.write(os.listdir("trained model"))
+else:
+    st.error("trained model folder does not exist!")
 
 # Workaround for OpenMP duplication error in Anaconda environment
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
