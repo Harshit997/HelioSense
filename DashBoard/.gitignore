@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments & Virtual Envs
+.env
+.venv
+env/
+venv/
+ENV/
+conda-env/
+
+# Data caches & local run artifacts
+.streamlit/
+*.log
+.DS_Store
+Thumbs.db
+.ipynb_checkpoints/
+.pytest_cache/

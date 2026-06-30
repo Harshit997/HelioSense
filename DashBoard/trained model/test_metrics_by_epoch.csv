@@ -1,0 +1,2 @@
+rank,epoch,checkpoint,train_loss_from_name,loss,future_binary_accuracy,nowcast_class_accuracy,future_peak_class_accuracy,nowcast_log_mae,future_peak_log_mae
+1,1,solexcode copy\solexcode copy\trained model\hour3epoch_001_train_8.084027e-01.pt,8.084027e-01,0.2854795257250468,0.7183098591549296,0.49295774647887325,0.5633802816901409,0.2435551361298897,0.15863704681396484
